@@ -86,33 +86,74 @@ def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], outp
         os.remove(temp_xfdf_path)
 
 
-def get_form_field_ids(input_pdf: str, pdftk_command: str = None) -> Dict[str, str]:
+def get_form_field_ids(input_pdf: str, output: str, pdftk_command: str = None):
     """
-    Given a pdf with form fields, returns a dictionary with:
-        keys: form field ids
-        values: form field name
+    Dumps form field metadata into a .txt file
 
     Args:
         input_pdf (str): path to the input pdf
+        output (str): path of the output txt dump
         pdftk_command (Optional: str): if the function can't find the pdftk executable, you can set it manually here.
-
-    Returns (Dict[str, str]): A Python dictionary with pdf form fields
 
     """
     # Sanity checks
-    get_form_field_ids_sanity_checks(input_pdf)
+    get_form_field_ids_sanity_checks(input_pdf, output)
 
     # Try to infer the location of pdftk
     if pdftk_command is None:
         pdftk_command = get_pdftk_path()
 
-    cmd = [pdftk_command, input_pdf, "dump_data_fields"]
+    cmd = [pdftk_command, input_pdf, "dump_data_fields", "output", output]
 
     try:
         subprocess.run(cmd)
     except (FileNotFoundError, OSError):
         # bash could not execute pdftk_command.
         raise OSError(bash_error_message(pdftk_command))
+
+
+def generate_dictionary(input_pdf: str, verbose: bool = False):
+    """
+    Super hacky function which creates a copy-pastable Python dictionary code.
+    Good for increasing productivity.
+    Not recommended to code this way.
+
+    Usage:
+    Run this function, copy paste output into terminal, fill in values.
+
+    Finding out metadata:
+    If you want to know the metadata of each field, such as their names or how to turn them on/off, set verbose to True
+
+    Buttons:
+    If the FieldType is Button, the first FieldStateOption sets it to checked, second to unchecked
+
+    Args:
+        input_pdf:
+        verbose:
+
+    Returns:
+
+    """
+    temp_form_field_dump = "temp_form_field_dump.txt"
+    get_form_field_ids(input_pdf, temp_form_field_dump)
+
+    with open(temp_form_field_dump) as fh:
+        dict_str = ""
+        dict_str += "rename_me = {\n"
+
+        for line in fh:
+            if line.startswith("FieldName:") and not verbose:
+                form_field_id = line.strip()[len("FieldName: "):]
+                dict_str += f"    \"{form_field_id}\": ,\n"
+            if verbose:
+                dict_str += f"    # {line}"
+
+        dict_str += "}"
+
+        print(dict_str)
+
+    if os.path.exists(temp_form_field_dump):
+        os.remove(temp_form_field_dump)
 
 
 
