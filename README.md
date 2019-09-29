@@ -45,5 +45,5 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
 ## Acknowledgments
 
 * [pypdftk](https://github.com/revolunet/pypdftk) Inspiration: another wrapper around pdftk that does not work under 
-Windows, which is why this package was created.
+Windows and Python 3.7, which is why this package was created.
 
