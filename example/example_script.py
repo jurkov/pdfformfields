@@ -2,7 +2,7 @@
 Demo for pdfformfields.
 For more details, go to https://github.com/Balonger/pdfformfields
 """
-from pdfformfields import fill_form_fields, get_form_field_ids, generate_dictionary
+from pdfformfields import fill_form_fields, generate_dictionary
 
 
 # Example pdf containing two fields with ids: first_name, last_name
