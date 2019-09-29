@@ -5,14 +5,31 @@ For more details, go to https://github.com/Balonger/pdfformfields
 from pdfformfields import fill_form_fields, generate_dictionary
 
 
-# Example pdf containing two fields with ids: first_name, last_name
+# Example pdf containing two fields with the ids: first_name, last_name
 example_input_pdf = "example_input.pdf"
 
-# Use generate_dictionary() with verbose=True to understand the structure
-# generate_dictionary(example_input_pdf, verbose=True)
+# Use generate_dictionary() with verbose=True to understand the structure. FieldName is the id of the field.
+generate_dictionary(example_input_pdf, verbose=True)
+
+""" The output should be:
+rename_me = {
+    # ---
+    # FieldType: Text
+    # FieldName: first_name
+    # FieldFlags: 0
+    # FieldValue: 
+    # FieldJustification: Left
+    # ---
+    # FieldType: Text
+    # FieldName: last_name
+    # FieldFlags: 0
+    # FieldValue: 
+    # FieldJustification: Left
+}
+"""
 
 # Use generate_dictionary() without verbose=True to generate a copiable code for the field dictionary onto the console
-generate_dictionary(example_input_pdf)
+# generate_dictionary(example_input_pdf)
 
 """ The output should be:
 rename_me = {
