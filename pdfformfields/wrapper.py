@@ -53,12 +53,12 @@ def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], outp
         flatten (Optional: bool): if set to true the output pdf won't be editable
         pdftk_command (Optional: str): if the function can't find the pdftk executable, you can set it manually here.
     """
+    # Sanity checks
+    fill_form_fields_sanity_checks(input_pdf, form_field_dictionary, output_pdf)
+
     # Try to infer the location of pdftk
     if pdftk_command is None:
         pdftk_command = get_pdftk_path()
-
-    # Sanity checks
-    fill_form_fields_sanity_checks(input_pdf, form_field_dictionary, output_pdf)
 
     # Create an xfdf file from the form_field directory and write it to a temporary file
     xfdf = Xfdf(input_pdf, form_field_dictionary)
@@ -99,7 +99,22 @@ def get_form_field_ids(input_pdf: str, pdftk_command: str = None) -> Dict[str, s
     Returns (Dict[str, str]): A Python dictionary with pdf form fields
 
     """
+    # Sanity checks
     get_form_field_ids_sanity_checks(input_pdf)
+
+    # Try to infer the location of pdftk
+    if pdftk_command is None:
+        pdftk_command = get_pdftk_path()
+
+    cmd = [pdftk_command, input_pdf, "dump_data_fields"]
+
+    try:
+        subprocess.run(cmd)
+    except (FileNotFoundError, OSError):
+        # bash could not execute pdftk_command.
+        raise OSError(bash_error_message(pdftk_command))
+
+
 
 
 
