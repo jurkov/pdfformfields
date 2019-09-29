@@ -3,8 +3,7 @@ import os
 from typing import Dict
 
 
-def fill_form_fields_sanity_checks(input_pdf: str, form_field_dictionary: Dict[str, str], output_pdf: str,
-                                   pdftk_command: str):
+def fill_form_fields_sanity_checks(input_pdf: str, form_field_dictionary: Dict[str, str], output_pdf: str):
 
     # input_pdf checks #################################################################################################
     if not os.path.isfile(input_pdf):

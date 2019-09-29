@@ -55,7 +55,7 @@ def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], outp
         pdftk_command = get_pdftk_path()
 
     # Sanity checks
-    fill_form_fields_sanity_checks(input_pdf, form_field_dictionary, output_pdf, pdftk_command)
+    fill_form_fields_sanity_checks(input_pdf, form_field_dictionary, output_pdf)
 
     # Create an xfdf file from the form_field directory and write it to a temporary file
     xfdf = Xfdf(input_pdf, form_field_dictionary)
