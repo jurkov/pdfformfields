@@ -1,8 +1,12 @@
 import platform
 import os
+import subprocess
+import tempfile
 from typing import Dict
 
 from xfdfgen import Xfdf
+
+from wrapper_runtime_tests import *
 
 
 if platform.system() == 'Windows':
@@ -11,7 +15,7 @@ if platform.system() == 'Windows':
         pdftk_path = probable_pdftk_location
 
 
-def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], output_pdf: str) -> None:
+def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], output_pdf: str, flatten: bool = False):
     """
     Takes an input pdf containing form fields, and fills them in from a python dictionary.
 
@@ -20,15 +24,28 @@ def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], outp
         form_field_dictionary (Dict[str, str]): a python dictionary with form field ids as keys,
                                                 and fill in values as values
         output_pdf (str): path to the output pdf
+        flatten: if set to true the output pdf won't be editable
     """
-    if not os.path.isfile(input_pdf):
-        raise OSError(f"{input_pdf} does not exist.")
+    fill_form_fields_sanity_checks(input_pdf, form_field_dictionary, output_pdf)
 
-    if not input_pdf.endswith(".pdf"):
-        raise ValueError(f"{input_pdf} is not a pdf file.")
+    xfdf = Xfdf(input_pdf, form_field_dictionary)
+    temp_xfdf_path = f"this.xfdf"
+    xfdf.write_xfdf(temp_xfdf_path)
 
-    if not isinstance(form_field_dictionary, dict):
-        raise TypeError("form_field_dictionary must be a dictionary")
+    cmd = [pdftk_path, input_pdf, "fill_form", temp_xfdf_path, "output", output_pdf]
 
-    if not output_pdf.endswith(".pdf"):
-        raise ValueError(f"{output_pdf} is not a pdf file.")
+    if flatten:
+        cmd.append("flatten")
+
+    subprocess.run(cmd)
+
+
+example_dict = {
+    "first_name": "john",
+    "last_name": "doe"
+}
+
+example_pdf = os.path.join(r"F:\Github_projects\pdfformfields\example\example_pdf.pdf")
+output_pdf = os.path.join(r"F:\Github_projects\pdfformfields\example\output2.pdf")
+
+fill_form_fields(example_pdf, example_dict, output_pdf)
