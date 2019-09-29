@@ -31,12 +31,12 @@ If it is, try setting the pdftk argument of fill_form_fields to ...
 
 ... on Linux:
 
-```python
+```
 fill_form_fields(..., pdftk_command="pdftk")
 ```
 
 ... on Windows:
-```python
+```
 pdftk_path = os.path,join("path_to_pdftk_server_folder", "bin", "pdftk.exe")
 fill_form_fields(..., pdftk_command=pdftk_path)
 ```
