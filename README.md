@@ -18,9 +18,32 @@ To install, simply run
 pip install pdfformfields
 ```
 
-## Running the tests
+## Usage
 
-Explain how to run the automated tests for this system
+### Filling forms
+
+```python
+from pdfformfields import fill_form_fields
+
+example_dict = {
+    "first_name": "john",
+    "last_name": "doe"
+}
+
+example_input_pdf = "example_input.pdf"
+
+example_output_pdf = r"example_output.pdf"
+fill_form_fields(example_input_pdf, example_dict, example_output_pdf)
+
+example_output_pdf_flattened = r"example_output_pdf_flattened.pdf"
+fill_form_fields(example_input_pdf, example_dict, example_output_pdf_flattened, flatten=True)
+```
+
+The dictionary containing the form fields has
+* keys: Form field ids from the document
+* values: The value you want to fill it with
+
+To get an output with no editable form fields, set flattened to True.
 
 ### Bash error
 
@@ -37,7 +60,7 @@ fill_form_fields(..., pdftk_command="pdftk")
 
 ... on Windows:
 ```
-pdftk_path = os.path,join("path_to_pdftk_server_folder", "bin", "pdftk.exe")
+pdftk_path = os.path.join("path_to_pdftk_server_folder", "bin", "pdftk.exe")
 fill_form_fields(..., pdftk_command=pdftk_path)
 ```
 
