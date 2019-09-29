@@ -1,3 +1,7 @@
+"""
+Demo for pdfformfields.
+For more details, go to https://github.com/Balonger/pdfformfields
+"""
 from pdfformfields import fill_form_fields
 
 example_dict = {
@@ -5,10 +9,10 @@ example_dict = {
     "last_name": "doe"
 }
 
-example_pdf = "example_input.pdf"
-output = r"example_output.pdf"
+example_input_pdf = "example_input.pdf"
 
-fill_form_fields(example_pdf, example_dict, output)
+example_output_pdf = r"example_output.pdf"
+fill_form_fields(example_input_pdf, example_dict, example_output_pdf)
 
-# To get an that can't be edited, set flatten to True.
-fill_form_fields(example_pdf, example_dict, output, flatten=True)
+example_output_pdf_flattened = r"example_output_pdf_flattened.pdf"
+fill_form_fields(example_input_pdf, example_dict, example_output_pdf_flattened, flatten=True)
