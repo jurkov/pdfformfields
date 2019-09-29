@@ -41,6 +41,9 @@ def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], outp
                      pdftk_command: str = None):
     """
     Takes an input pdf containing form fields, and fills them in from a python dictionary.
+    form_field_dictionary:
+        keys: form field ids
+        values: data you want to fill in
 
     Args:
         input_pdf (str): path to the input pdf
@@ -76,13 +79,27 @@ def fill_form_fields(input_pdf: str, form_field_dictionary: Dict[str, str], outp
             os.remove(temp_xfdf_path)
 
         # bash could not execute pdftk_command.
-        err_msg = f"{pdftk_command} could not be executed in bash." \
-                  f" See bash error at https://github.com/Balonger/pdfformfields"
-        raise OSError(err_msg)
+        raise OSError(bash_error_message(pdftk_command))
 
     # Remove temporary xfdf file
     if os.path.exists(temp_xfdf_path):
         os.remove(temp_xfdf_path)
+
+
+def get_form_field_ids(input_pdf: str, pdftk_command: str = None) -> Dict[str, str]:
+    """
+    Given a pdf with form fields, returns a dictionary with:
+        keys: form field ids
+        values: form field name
+
+    Args:
+        input_pdf (str): path to the input pdf
+        pdftk_command (Optional: str): if the function can't find the pdftk executable, you can set it manually here.
+
+    Returns (Dict[str, str]): A Python dictionary with pdf form fields
+
+    """
+    get_form_field_ids_sanity_checks(input_pdf)
 
 
 
