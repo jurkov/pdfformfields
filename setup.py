@@ -13,7 +13,7 @@ setuptools.setup(
     license="GPLv3+",
     description='pdfformfields is a Python wrapper around pdftk that fills in pdf forms from a Python dictionary.',
     version='v0.0.1',
-    long_description=README,
+    long_description_markdown_filename=README,
     url='https://github.com/Balonger/pdfformfields',
     packages=setuptools.find_packages(),
     python_requires=">=3.7",
