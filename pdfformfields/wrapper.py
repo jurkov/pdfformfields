@@ -11,7 +11,7 @@ from typing import Dict
 
 from xfdfgen import Xfdf
 
-from wrapper_runtime_tests import *
+from pdfformfields.wrapper_runtime_tests import *
 
 
 def get_pdftk_path():

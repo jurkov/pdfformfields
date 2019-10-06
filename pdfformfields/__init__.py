@@ -1,1 +1,1 @@
-from wrapper import fill_form_fields, generate_dictionary
+from pdfformfields.wrapper import fill_form_fields, generate_dictionary
