@@ -33,6 +33,9 @@ def get_pdftk_path():
         probable_pdftk_location = '/usr/bin/pdftk'
         if os.path.isfile(probable_pdftk_location):
             return probable_pdftk_location
+        probable_pdftk_location = '/app/pdftk'
+        if os.path.isfile(probable_pdftk_location):
+            return probable_pdftk_location
 
     return "pdftk"
 
